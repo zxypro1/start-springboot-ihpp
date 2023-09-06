@@ -1,91 +1,109 @@
-# ------------------------------------
-#   If you need English case, you can refer to [s_en.yaml] file
-# ------------------------------------
-#   欢迎您使用阿里云函数计算 FC 组件进行项目开发
-#   组件仓库地址：https://github.com/devsapp/fc
-#   组件帮助文档：https://www.serverless-devs.com/fc/readme
-#   Yaml参考文档：https://www.serverless-devs.com/fc/yaml/readme
-#   关于：
-#      - Serverless Devs和FC组件的关系、如何声明/部署多个函数、超过50M的代码包如何部署
-#      - 关于.fcignore使用方法、工具中.s目录是做什么、函数进行build操作之后如何处理build的产物
-#   等问题，可以参考文档：https://www.serverless-devs.com/fc/tips
-#   关于如何做CICD等问题，可以参考：https://www.serverless-devs.com/serverless-devs/cicd
-#   关于如何进行环境划分等问题，可以参考：https://www.serverless-devs.com/serverless-devs/extend
-#   更多函数计算案例，可参考：https://github.com/devsapp/awesome/
-#   有问题快来钉钉群问一下吧：33947367
-# ------------------------------------
-edition: 1.0.0
-name: start-springboot-ihpp
-# access 是当前应用所需要的密钥信息配置：
-# 密钥配置可以参考：https://www.serverless-devs.com/serverless-devs/command/config
-# 密钥使用顺序可以参考：https://www.serverless-devs.com/serverless-devs/tool#密钥使用顺序与规范
-access: 'default'
+kind: Pipeline
+# 流水线执行名称，需要全局唯一。如果流水线模板存在，则不能成功提交流水线执行
+# 推荐使用commitID与时间戳构造唯一的名称
+name: "p-<% .git.shortCommitId %>-<% .currentTimestampMs %>"
+# 一些任意的描述信息
+description: 'demo pipeline'
+# 添加任意的labels，用于查询过滤
+# 应用中心会在提交时也会添加其他labels
+labels:
+  myLabel: my-cicd-example
+spec:
+  context:
+    data:
+      appName: <% .appName %>
+  # 本次执行使用的流水线模板
+  # 可以选择已有的模板，也可以在配置文件中自定义
+  # 这里的例子为引用下文
+  templateName: mytemplate-<% .git.branch %>
 
-vars: # 全局变量
-  region: 'cn-hangzhou'
-  service:
-    name: 'web-framework-ihpp'
-    description: 'Serverless Devs Web Framework Service'
+---
 
-services:
-  framework: # 业务名称/模块名称
-    # 如果只想针对 framework 下面的业务进行相关操作，可以在命令行中加上 framework，例如：
-    # 只对framework进行构建：s framework build
-    # 如果不带有 framework ，而是直接执行 s build，工具则会对当前Yaml下，所有和 framework 平级的业务模块（如有其他平级的模块，例如下面注释的next-function），按照一定顺序进行 build 操作
-    component: fc # 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力
-    actions: # 自定义执行逻辑，关于actions 的使用，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#行为描述
-      pre-deploy: # 在deploy之前运行
-        - run: mvn package -DskipTests # 要执行的系统命令，类似于一种钩子的形式
-          path: ./code # 执行系统命令/钩子的路径
-    #        - component: fc build --use-docker               # 要运行的组件，格式为【component: 组件名 命令 参数】（可以通过s cli registry search --type Component 获取组件列表）
-    #        - plugin: myplugin                               # 与运行的插件 （可以通过s cli registry search --type Plugin 获取组件列表）
-    #          args:                                          # 插件的参数信息
-    #            testKey: testValue
-    #      post-deploy: # 在deploy之后运行
-    #        - component: fc versions publish # 要运行的命令行
-    props: # 组件的属性值
-      region: ${vars.region} # 关于变量的使用方法，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#变量赋值
-      service: ${vars.service}
-      function:
-        name: 'springboot'
-        description: 'Serverless Devs Web Framework Function'
-        codeUri: ./code
-        runtime: custom
-        memorySize: 1024
-        timeout: 30
-        instanceConcurrency: 100
-        customRuntimeConfig:
-          command:
-            - ./bootstrap
-      triggers:
-        - name: httpTrigger
-          type: http
-          config:
-            authType: anonymous
-            methods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - HEAD
-              - OPTIONS
-      customDomains:
-        - domainName: auto
-          protocol: HTTP
-          routeConfigs:
-            - path: /*
-
-#  next-function: # 第二个函数的案例，仅供参考
-#    # 如果在当前项目下执行 s deploy，会同时部署模块：
-#    #   helloworld：服务hello-world-service，函数cpp-event-function
-#    #   next-function：服务hello-world-service，函数next-function-example
-#    # 如果想单独部署当前服务与函数，可以执行 s + 模块名/业务名 + deploy，例如：s next-function deploy
-#    # 如果想单独部署当前函数，可以执行 s + 模块名/业务名 + deploy function，例如：s next-function deploy function
-#    # 更多命令可参考：https://www.serverless-devs.com/fc/readme#文档相关
-#    component: fc
-#    props:
-#      region: ${vars.region}
-#      service: ${vars.service} # 应用整体的服务配置
-#      function: # 定义一个新的函数
-#        name: next-function-example
-#        description: 'hello world by serverless devs'
+# 修改流水线模板，应用中心会按照该配置，创建或更新对应的模板
+kind: PipelineTemplate
+# 流水线模板名称，需要全局唯一，如果流水线模板存在，则会更新已有模板
+# 推荐使用Branch或MR关联的ID构造唯一的名称
+name: mytemplate-<% .git.branch %>
+# 一些任意的描述信息
+description: 用于测试环境的流水线模板
+# 添加任意的labels，用于查询过滤
+# 应用中心会在提交时也会添加其他labels
+labels:
+  myLabel: my-cicd-example
+spec:
+  context:
+    data:
+      # 环境名称，推荐不同的环境使用不同的流水线模板
+      envName: test
+      deployFile: s.yaml
+  # 要执行的任务，默认所有任务会一同尝试执行
+  # 执行会满足runAfters引入的先后约束，任务必须在runAfters声明的任务执行完毕后才可以被执行
+  # 用户可以使用此特性，达到DAG描述的效果
+  tasks:
+  # 构建前检查
+  - name: pre-check
+    context:
+      data:
+        displayName: "前置检查"
+        # 打开任务执行，默认是关闭的
+        enable: true
+        # 同样可以在此处声明钉钉告警配置，修改告警模板
+        # dingdingNotification:
+        # 同样可以在此处声明或修改RunnerConfig
+        # runnerConfig:
+        # 执行步骤。下述步骤将会采用开源项目serverless-cd提供的engine进行执行
+        steps:
+          # 第一步，checkout代码
+          # 这里采用了plugin机制，运行serverless-cd社区的插件
+          # @serverless-cd/checkout是一个社区提供的插件，它会将代码checkout到默认路径
+          # 我们会陆续为社区提供更多的插件
+          - plugin: "@serverless-cd/checkout"
+          # 第二步，初始化s工具
+          - plugin: "@serverless-cd/s-setup" 
+            # 执行s-plan，并打印输出内容
+            # 这里为了说明engine能力，将它拆分成了多个step执行
+          - run: s plan --local -o json >> plan.out
+          - run: echo "s plan finished."
+          - run: cat plan.out
+    # 任务模板。这里使用了内置的模板serverless-runner-task
+    taskTemplate: serverless-runner-task
+    # 执行顺序，当前任务执行依赖runAfters任务都执行成功
+    runAfters: []
+  - name: pre-check-approval
+    context:
+      data:
+        dingdingNotification:
+          # 关闭通知
+          enable: false
+        # 打开任务执行
+        enable: true
+    # 采用内置的need-approval模板
+    taskTemplate: need-approval
+    runAfters:
+    # 需要在pre-check执行后才执行
+    - name: pre-check
+  # 构建并部署
+  - name: build-and-deploy
+    context:
+      data:
+        # 打开任务执行，默认是关闭的
+        enable: true
+        # 同样可以在此处声明钉钉告警配置，修改告警模板
+        # dingdingNotification:
+        # 同样可以在此处声明或修改RunnerConfig
+        # runnerConfig:
+        # 执行步骤。下述步骤将会采用开源项目serverless-cd提供的engine进行执行
+        steps:
+          # 每个Task都是独立运行的Serverless实例，需要重新checkout
+          - plugin: "@serverless-cd/checkout"
+          # 同理，需要再次初始化s工具
+          - plugin: "@serverless-cd/s-setup"
+          # 执行s-deploy
+          - run: |
+              s deploy -t "s.yaml" --use-local --assume-yes --skip-push
+              echo "Deploy by Serverless Devs success."
+    taskTemplate: serverless-runner-task
+    # 执行顺序，当前任务执行依赖runAfters任务都执行成功
+    runAfters:
+    # 在approval后执行
+    - name: pre-check-approval
