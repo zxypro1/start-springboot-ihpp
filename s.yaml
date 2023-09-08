@@ -87,7 +87,7 @@ spec:
     context:
       data:
         # 打开任务执行，默认是关闭的
-        enable: false
+        enable: true
         # 同样可以在此处声明钉钉告警配置，修改告警模板
         # dingdingNotification:
         # 同样可以在此处声明或修改RunnerConfig
@@ -106,4 +106,4 @@ spec:
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
     runAfters:
     # 在approval后执行
-    - name: pre-check-approval
+    - name: pre-check
