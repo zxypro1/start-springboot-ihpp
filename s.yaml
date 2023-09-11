@@ -129,6 +129,5 @@ spec:
               echo "Deploy by Serverless Devs success."
     taskTemplate: serverless-runner-task
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters:
+    runAfters: []
     # 在approval后执行
-    -
