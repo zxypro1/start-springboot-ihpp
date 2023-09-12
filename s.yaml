@@ -70,6 +70,7 @@ spec:
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
     runAfters: 
     - name: run2
+    - name: run
   - name: pre-check-approval
     context:
       data:
@@ -83,7 +84,6 @@ spec:
     runAfters:
     # 需要在pre-check执行后才执行
     - name: pre-check
-    - name: run
   # 构建并部署
   - name: build-and-deploy
     context:
