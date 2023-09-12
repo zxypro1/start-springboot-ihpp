@@ -51,12 +51,6 @@ spec:
     runAfters:
     # 需要在pre-check执行后才执行
     - name: pre-check
-
-  - name: 线上审核
-    taskTemplate: need-approval
-    runAfters:
-    # 需要在pre-check执行后才执行
-    - name: pre-check
     
   - name: build-and-deploy
     taskTemplate: serverless-runner-task
@@ -64,4 +58,3 @@ spec:
     runAfters:
     # 在approval后执行
     - name: pre-check-approval
-    - name: 线上审核
