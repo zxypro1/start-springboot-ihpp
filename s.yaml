@@ -108,29 +108,6 @@ spec:
     runAfters:
     # 在approval后执行
     - name: pre-check
-  - name: run
-    context:
-      data:
-        # 打开任务执行，默认是关闭的
-        enable: true
-        # 同样可以在此处声明钉钉告警配置，修改告警模板
-        # dingdingNotification:
-        # 同样可以在此处声明或修改RunnerConfig
-        # runnerConfig:
-        # 执行步骤。下述步骤将会采用开源项目serverless-cd提供的engine进行执行
-        steps:
-          # 每个Task都是独立运行的Serverless实例，需要重新checkout
-          - plugin: "@serverless-cd/checkout"
-          # 同理，需要再次初始化s工具
-          - plugin: "@serverless-cd/s-setup"
-          # 执行s-deploy
-          - run: |
-              s deploy -t "s.yaml" --use-local --assume-yes --skip-push
-              echo "Deploy by Serverless Devs success."
-    taskTemplate: serverless-runner-task
-    # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters: []
-    # 在approval后执行
   - name: run2
     context:
       data:
