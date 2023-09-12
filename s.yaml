@@ -46,7 +46,6 @@ spec:
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
     runAfters: 
     - name: run2
-    - name: run
     - name: run4
   - name: pre-check-approval
     taskTemplate: need-approval
@@ -68,7 +67,8 @@ spec:
   - name: run
     taskTemplate: serverless-runner-task
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters: []
+    runAfters: 
+    - name: build-and-deploy
 
   - name: run3
     taskTemplate: serverless-runner-task
