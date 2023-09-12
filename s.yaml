@@ -132,7 +132,6 @@ spec:
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
     runAfters:
     - name: run3
-    - name: run
   - name: run
     context:
       data:
