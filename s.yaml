@@ -44,9 +44,7 @@ spec:
   - name: pre-check
     taskTemplate: serverless-runner-task
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters: 
-    - name: run2
-    - name: run4
+    runAfters: []
   - name: pre-check-approval
     taskTemplate: need-approval
     runAfters:
@@ -64,18 +62,3 @@ spec:
     # 在approval后执行
     - name: pre-check-approval
     - name: 自动检查
-  - name: run2
-    taskTemplate: serverless-runner-task
-    # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters:
-    - name: run3
-
-  - name: run3
-    taskTemplate: serverless-runner-task
-    # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters: []
-    
-  - name: run4
-    taskTemplate: serverless-runner-task
-    # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters: []
