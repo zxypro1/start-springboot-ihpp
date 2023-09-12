@@ -68,8 +68,7 @@ spec:
     # 任务模板。这里使用了内置的模板serverless-runner-task
     taskTemplate: serverless-runner-task
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters: 
-    - name: run
+    runAfters: []
   - name: pre-check-approval
     context:
       data:
@@ -83,6 +82,7 @@ spec:
     runAfters:
     # 需要在pre-check执行后才执行
     - name: pre-check
+    - name: run
   # 构建并部署
   - name: build-and-deploy
     context:
