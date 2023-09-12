@@ -83,7 +83,6 @@ spec:
     runAfters:
     # 需要在pre-check执行后才执行
     - name: pre-check
-    - name: run
   # 构建并部署
   - name: build-and-deploy
     context:
