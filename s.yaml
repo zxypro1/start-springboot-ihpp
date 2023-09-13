@@ -46,8 +46,15 @@ spec:
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
     runAfters: []
     
-  - name: pre-check-approval
+  - context:
+        data:
+          dingdingNotification:
+            enable: false
+            message:
+              text: {}
+            skipOnSuccess: false
     taskTemplate: need-approval
+    name: pre-check-approval
     runAfters:
     # 需要在pre-check执行后才执行
     - name: pre-check
