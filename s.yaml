@@ -70,3 +70,9 @@ spec:
     # 在approval后执行
     - name: pre-check-approval
     - name: onlinecheck
+    - name: onlinecheck2
+  - name: onlinecheck2
+    taskTemplate: need-approval
+    runAfters:
+    # 需要在pre-check执行后才执行
+    - name: pre-check
