@@ -71,6 +71,7 @@ spec:
     - name: pre-check-approval
     - name: onlinecheck
     - name: onlinecheck2
+    - name: onlinecheck3
   - name: onlinecheck2
     context:
       data:
