@@ -72,6 +72,8 @@ spec:
     - name: onlinecheck
     - name: onlinecheck2
   - name: onlinecheck2
+    context:
+      data:
     taskTemplate: need-approval
     runAfters:
     # 需要在pre-check执行后才执行
