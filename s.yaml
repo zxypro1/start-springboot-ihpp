@@ -80,6 +80,13 @@ spec:
     runAfters:
     # 需要在pre-check执行后才执行
     - name: pre-check
+  - name: onlinecheck2
+    context:
+      data:
+    taskTemplate: need-approval
+    runAfters:
+    # 需要在pre-check执行后才执行
+    - name: pre-check
   - name: onlinecheck3
     context:
       data:
