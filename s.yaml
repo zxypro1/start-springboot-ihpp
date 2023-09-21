@@ -63,6 +63,11 @@ spec:
     runAfters:
     # 需要在pre-check执行后才执行
     - name: pre-check
+  - name: onlinecheck4
+    taskTemplate: need-approval
+    runAfters:
+    # 需要在pre-check执行后才执行
+    - name: pre-check
   - name: build-and-deploy
     taskTemplate: serverless-runner-task
     # 执行顺序，当前任务执行依赖runAfters任务都执行成功
