@@ -40,64 +40,71 @@ spec:
   # 执行会满足runAfters引入的先后约束，任务必须在runAfters声明的任务执行完毕后才可以被执行
   # 用户可以使用此特性，达到DAG描述的效果
   tasks:
-  # 构建前检查
-  - name: pre-check
-    taskTemplate: serverless-runner-task
-    # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters: []
-    
-  - context:
+    # 构建前检查
+    - name: pre-check
+      taskTemplate: serverless-runner-task
+      # 执行顺序，当前任务执行依赖runAfters任务都执行成功
+      runAfters: []
+
+    - context:
         data:
           dingdingNotification:
             enable: false
             message:
               text: {}
             skipOnSuccess: false
-    taskTemplate: need-approval
-    name: pre-check-approval
-    runAfters:
-    # 需要在pre-check执行后才执行
-    - name: pre-check
-  - name: onlinecheck
-    taskTemplate: need-approval
-    runAfters:
-    # 需要在pre-check执行后才执行
-    - name: pre-check
-  - name: build-and-deploy
-    taskTemplate: serverless-runner-task
-    # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-    runAfters:
-    # 在approval后执行
-    - name: pre-check-approval
+      taskTemplate: need-approval
+      name: pre-check-approval
+      runAfters:
+        # 需要在pre-check执行后才执行
+        - name: pre-check
     - name: onlinecheck
+      taskTemplate: need-approval
+      runAfters:
+        # 需要在pre-check执行后才执行
+        - name: pre-check
+    - name: build-and-deploy
+      taskTemplate: serverless-runner-task
+      # 执行顺序，当前任务执行依赖runAfters任务都执行成功
+      runAfters:
+        # 在approval后执行
+        - name: pre-check-approval
+        - name: onlinecheck
+        - name: onlinecheck2
+        - name: onlinecheck3
+        - name: onlinecheck4
     - name: onlinecheck2
+      context:
+        data:
+      taskTemplate: need-approval
+      runAfters:
+        # 需要在pre-check执行后才执行
+        - name: pre-check
+    - name: onlinecheck5
+      context:
+        data:
+      taskTemplate: need-approval
+      runAfters:
+        # 需要在pre-check执行后才执行
+        - name: pre-check
     - name: onlinecheck3
+      context:
+        data:
+      taskTemplate: need-approval
+      runAfters:
+        # 需要在pre-check执行后才执行
+        - name: pre-check
     - name: onlinecheck4
-  - name: onlinecheck2
-    context:
-      data:
-    taskTemplate: need-approval
-    runAfters:
-    # 需要在pre-check执行后才执行
-    - name: pre-check
-  - name: onlinecheck5
-    context:
-      data:
-    taskTemplate: need-approval
-    runAfters:
-    # 需要在pre-check执行后才执行
-    - name: pre-check
-  - name: onlinecheck3
-    context:
-      data:
-    taskTemplate: need-approval
-    runAfters:
-    # 需要在pre-check执行后才执行
-    - name: pre-check
-  - name: onlinecheck4
-    context:
-      data:
-    taskTemplate: need-approval
-    runAfters:
-    # 需要在pre-check执行后才执行
-    - name: pre-check
+      context:
+        data:
+      taskTemplate: need-approval
+      runAfters:
+        # 需要在pre-check执行后才执行
+        - name: pre-check
+    - name: onlinecheck5
+      context:
+        data:
+      taskTemplate: need-approval
+      runAfters:
+        # 需要在pre-check执行后才执行
+        - name: pre-check
