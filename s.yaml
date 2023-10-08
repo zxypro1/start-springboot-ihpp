@@ -45,7 +45,6 @@ spec:
       taskTemplate: serverless-runner-task
       # 执行顺序，当前任务执行依赖runAfters任务都执行成功
       runAfters: []
-
     - context:
         data:
           dingdingNotification:
@@ -56,8 +55,8 @@ spec:
       taskTemplate: need-approval
       name: pre-check-approval
       runAfters:
-        # 需要在pre-check执行后才执行
         - name: pre-check
+        - name: build-publish
     - name: onlinecheck
       taskTemplate: need-approval
       runAfters:
@@ -100,3 +99,14 @@ spec:
       runAfters:
         # 需要在pre-check执行后才执行
         - name: pre-check
+    - name: build-publish
+      context:
+        data:
+          displayName: 构建部署
+          enable: true
+          steps:
+            - plugin: "@serverless-cd/checkout"
+            - plugin: "@serverless-cd/s-setup"
+            - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
+                --skip-push
+      taskTemplate: serverless-runner-task
