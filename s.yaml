@@ -60,16 +60,6 @@ spec:
       taskTemplate: need-approval
       runAfters:
         - name: pre-check
-    - name: build-and-deploy
-      taskTemplate: serverless-runner-task
-      # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-      runAfters:
-        # 在approval后执行
-        - name: pre-check-approval
-        - name: onlinecheck
-        - name: onlinecheck2
-        - name: onlinecheck3
-        - name: onlinecheck4
     - name: onlinecheck2
       context:
         data:
