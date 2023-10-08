@@ -56,10 +56,6 @@ spec:
       name: pre-check-approval
       runAfters:
         - name: pre-check
-    - name: onlinecheck
-      taskTemplate: need-approval
-      runAfters:
-        - name: pre-check
     - name: onlinecheck2
       context:
         data:
