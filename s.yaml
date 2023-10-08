@@ -56,7 +56,6 @@ spec:
       name: pre-check-approval
       runAfters:
         - name: pre-check
-        - name: build-publish
     - name: onlinecheck
       taskTemplate: need-approval
       runAfters:
@@ -99,14 +98,3 @@ spec:
       runAfters:
         # 需要在pre-check执行后才执行
         - name: pre-check
-    - name: build-publish
-      context:
-        data:
-          displayName: 构建部署
-          enable: true
-          steps:
-            - plugin: "@serverless-cd/checkout"
-            - plugin: "@serverless-cd/s-setup"
-            - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
-                --skip-push
-      taskTemplate: serverless-runner-task
