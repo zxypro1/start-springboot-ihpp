@@ -58,7 +58,7 @@ spec:
       runAfters:
         # 需要在pre-check执行后才执行
         - name: pre-check
-    - name: onlinecheck
+    - name: onlinecheck8
       taskTemplate: need-approval
       runAfters:
         # 需要在pre-check执行后才执行
@@ -69,7 +69,7 @@ spec:
       runAfters:
         # 在approval后执行
         - name: pre-check-approval
-        - name: onlinecheck
+        - name: onlinecheck8
         - name: onlinecheck2
         - name: onlinecheck3
         - name: onlinecheck4
