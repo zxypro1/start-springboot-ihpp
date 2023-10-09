@@ -56,29 +56,15 @@ spec:
       name: pre-check-approval
       runAfters:
         - name: pre-check
-    - name: fc-release-hzfb
+        - name: build-and-deploy-djk9
+    - name: build-and-deploy-djk9
       context:
         data:
-          displayName: 版本发布
+          displayName: "构建部署"
           enable: true
           steps:
             - plugin: "@serverless-cd/checkout"
             - plugin: "@serverless-cd/s-setup"
-            - plugin: "@serverless-cd/fc-release"
-              inputs:
-                serviceName: my-fc-service
-                aliasName: dev
-                regionId: cn-hangzhou
-      taskTemplate: serverless-runner-task
-      runAfters:
-        - name: pre-check-88ho
-    - name: pre-check-88ho
-      context:
-        data:
-          displayName: "前置检查"
-          enable: true
-          steps:
-            - plugin: "@serverless-cd/checkout"
-            - plguin: "@serverless-cd/s-setup"
-            - run: s plan -t "${{ ctx.data.deployFile }}"
+            - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
+                --skip-push
       taskTemplate: serverless-runner-task
