@@ -41,9 +41,8 @@ spec:
   # 用户可以使用此特性，达到DAG描述的效果
   tasks:
     # 构建前检查
-    - name: pre-check
+    - name: pre-check-123
       taskTemplate: serverless-runner-task
-      # 执行顺序，当前任务执行依赖runAfters任务都执行成功
       runAfters: []
     - context:
         data:
@@ -55,12 +54,12 @@ spec:
       taskTemplate: need-approval
       name: pre-check-approval
       runAfters:
-        - name: pre-check
+        - name: pre-check-123
         - name: build-and-deploy-djk9
     - name: build-and-deploy-djk9
       context:
         data:
-          displayName: "构建部署"
+          displayName: 构建部署
           enable: true
           steps:
             - plugin: "@serverless-cd/checkout"
@@ -68,6 +67,8 @@ spec:
             - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
                 --skip-push
       taskTemplate: serverless-runner-task
+      runAfters:
+        - name: fc-canary-4kn5
     - name: build-and-deploy-djk1
       context:
         data:
@@ -78,4 +79,19 @@ spec:
             - plugin: "@serverless-cd/s-setup"
             - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
                 --skip-push
+      taskTemplate: serverless-runner-task
+    - name: fc-canary-4kn5
+      context:
+        data:
+          displayName: "版本灰度"
+          enable: true
+          steps:
+            - plugin: "@serverless-cd/checkout"
+            - plugin: "@serverless-cd/s-setup"
+            - plugin: "@serverless-cd/fc-canary"
+              inputs:
+                serviceName: my-fc-service
+                aliasName: dev
+                regionId: cn-hangzhou
+                canaryPercent: 50
       taskTemplate: serverless-runner-task
