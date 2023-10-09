@@ -43,7 +43,8 @@ spec:
     # 构建前检查
     - name: pre-check-123
       taskTemplate: serverless-runner-task
-      runAfters: []
+      runAfters:
+        - name: fc-canary-4kn5
     - context:
         data:
           dingdingNotification:
