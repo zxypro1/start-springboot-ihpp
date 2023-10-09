@@ -70,6 +70,7 @@ spec:
       taskTemplate: serverless-runner-task
       runAfters:
         - name: fc-canary-4kn5
+        - name: blank-1vuj
     - name: build-and-deploy-djk1
       context:
         data:
@@ -95,4 +96,18 @@ spec:
                 aliasName: dev
                 regionId: cn-hangzhou
                 canaryPercent: 50
+      taskTemplate: serverless-runner-task
+    - name: blank-1vuj
+      context:
+        data:
+          displayName: 空白任务
+          enable: true
+      taskTemplate: serverless-runner-task
+      runAfters:
+        - name: blank-4j8k
+    - name: blank-4j8k
+      context:
+        data:
+          displayName: "空白任务"
+          enable: true
       taskTemplate: serverless-runner-task
