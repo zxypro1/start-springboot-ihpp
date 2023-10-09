@@ -70,4 +70,15 @@ spec:
                 aliasName: dev
                 regionId: cn-hangzhou
       taskTemplate: serverless-runner-task
-      runAfters: []
+      runAfters:
+        - name: pre-check-88ho
+    - name: pre-check-88ho
+      context:
+        data:
+          displayName: "前置检查"
+          enable: true
+          steps:
+            - plugin: "@serverless-cd/checkout"
+            - plguin: "@serverless-cd/s-setup"
+            - run: s plan -t "${{ ctx.data.deployFile }}"
+      taskTemplate: serverless-runner-task
