@@ -56,10 +56,18 @@ spec:
       name: pre-check-approval
       runAfters:
         - name: pre-check
-    - name: onlinecheck2
+    - name: fc-release-hzfb
       context:
         data:
-      taskTemplate: need-approval
-      runAfters:
-        # 需要在pre-check执行后才执行
-        - name: pre-check
+          displayName: 版本发布
+          enable: true
+          steps:
+            - plugin: "@serverless-cd/checkout"
+            - plugin: "@serverless-cd/s-setup"
+            - plugin: "@serverless-cd/fc-release"
+              inputs:
+                serviceName: my-fc-service
+                aliasName: dev
+                regionId: cn-hangzhou
+      taskTemplate: serverless-runner-task
+      runAfters: []
