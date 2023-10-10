@@ -71,6 +71,8 @@ spec:
       runAfters:
         - name: fc-canary-4kn5
         - name: blank-1vuj
+        - name: build-and-deploy-djk1
+  
     - name: build-and-deploy-djk1
       context:
         data:
@@ -85,7 +87,7 @@ spec:
     - name: fc-canary-4kn5
       context:
         data:
-          displayName: "版本灰度"
+          displayName: "版本灰度123"
           enable: true
           steps:
             - plugin: "@serverless-cd/checkout"
@@ -103,11 +105,4 @@ spec:
           displayName: 空白任务
           enable: true
       taskTemplate: serverless-runner-task
-      runAfters:
-        - name: blank-4j8k
-    - name: blank-4j8k
-      context:
-        data:
-          displayName: "空白任务"
-          enable: true
-      taskTemplate: serverless-runner-task
+      runAfters: []
