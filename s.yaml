@@ -71,19 +71,6 @@ spec:
       runAfters:
         - name: fc-canary-4kn5
         - name: blank-1vuj
-        - name: build-and-deploy-djk1
-  
-    - name: build-and-deploy-djk1
-      context:
-        data:
-          displayName: "构建部署"
-          enable: true
-          steps:
-            - plugin: "@serverless-cd/checkout"
-            - plugin: "@serverless-cd/s-setup"
-            - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
-                --skip-push
-      taskTemplate: serverless-runner-task
     - name: fc-canary-4kn5
       context:
         data:
@@ -105,4 +92,3 @@ spec:
           displayName: 空白任务
           enable: true
       taskTemplate: serverless-runner-task
-      runAfters: []
