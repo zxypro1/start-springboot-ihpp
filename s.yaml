@@ -56,25 +56,10 @@ spec:
       name: pre-check-approval
       runAfters:
         - name: pre-check-123
-        - name: build-and-deploy-djk9
-    - name: build-and-deploy-djk9
-      context:
-        data:
-          displayName: 构建部署
-          enable: true
-          steps:
-            - plugin: "@serverless-cd/checkout"
-            - plugin: "@serverless-cd/s-setup"
-            - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
-                --skip-push
-      taskTemplate: serverless-runner-task
-      runAfters:
-        - name: fc-canary-4kn5
-        - name: blank-1vuj
     - name: fc-canary-4kn5
       context:
         data:
-          displayName: "版本灰度123"
+          displayName: "版本灰度asd"
           enable: true
           steps:
             - plugin: "@serverless-cd/checkout"
@@ -86,9 +71,15 @@ spec:
                 regionId: cn-hangzhou
                 canaryPercent: 50
       taskTemplate: serverless-runner-task
-    - name: blank-1vuj
+    - name: pre-check-ucr9
       context:
         data:
-          displayName: 空白任务
+          displayName: 前置检查
           enable: true
+          steps:
+            - plugin: "@serverless-cd/checkout"
+            - plguin: "@serverless-cd/s-setup"
+            - run: s plan -t "${{ ctx.data.deployFile }}"
       taskTemplate: serverless-runner-task
+      runAfters:
+        - name: pre-check-123
