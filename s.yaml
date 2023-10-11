@@ -97,7 +97,7 @@ spec:
     - name: build-and-deploy-rhkf
       context:
         data:
-          displayName: "构建部署"
+          displayName: "构建部署123"
           enable: true
           steps:
             - plugin: "@serverless-cd/checkout"
@@ -122,4 +122,3 @@ spec:
       taskTemplate: serverless-runner-task
       runAfters:
         - name: build-and-deploy-rhkf
-
