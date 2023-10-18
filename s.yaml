@@ -24,7 +24,7 @@ spec:
       - name: pre-check
         context:
           data:
-            displayName: "前置检查"
+            displayName: "前置检查1231"
             # 打开任务执行，默认是关闭的
             enable: true
             # 同样可以在此处声明钉钉告警配置，修改告警模板
