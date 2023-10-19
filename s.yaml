@@ -111,3 +111,48 @@ spec:
         taskTemplate: serverless-runner-task
         runAfters:
           - name: pre-check
+      - name: fc-canary-irl2
+        context:
+          data:
+            displayName: 版本灰度
+            enable: true
+            steps:
+              - plugin: "@serverless-cd/checkout"
+              - plugin: "@serverless-cd/s-setup"
+              - plugin: "@serverless-cd/fc-canary"
+                inputs:
+                  serviceName: my-fc-service
+                  aliasName: dev
+                  regionId: cn-hangzhou
+                  canaryPercent: 50
+        taskTemplate: serverless-runner-task
+        runAfters:
+          - name: blank-zp98
+      - name: fc-release-r6pj
+        context:
+          data:
+            displayName: 版本发布
+            enable: true
+            steps:
+              - plugin: "@serverless-cd/checkout"
+              - plugin: "@serverless-cd/s-setup"
+              - plugin: "@serverless-cd/fc-release"
+                inputs:
+                  serviceName: my-fc-service
+                  aliasName: dev
+                  regionId: cn-hangzhou
+        taskTemplate: serverless-runner-task
+        runAfters:
+          - name: blank-zp98
+          - name: build-and-deploy-dmgi
+      - name: build-and-deploy-dmgi
+        context:
+          data:
+            displayName: "构建部署"
+            enable: true
+            steps:
+              - plugin: "@serverless-cd/checkout"
+              - plugin: "@serverless-cd/s-setup"
+              - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
+                  --skip-push
+        taskTemplate: serverless-runner-task
