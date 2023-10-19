@@ -67,7 +67,7 @@ spec:
               - run: |
                   set -e  
                   s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push 
-                  echo "Deploy by Serverless Devs success."
+                  echo "Deploy by Serverless Devs success.
         taskTemplate: serverless-runner-task
         runAfters:
           - name: pre-check-approval
