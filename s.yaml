@@ -41,7 +41,7 @@ spec:
             steps:
               - plugin: "@serverless-cd/checkout"
               - plugin: "@serverless-cd/s-setup"
-              - run: >
+              - run: |
                   set -e  
                   s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push 
                   echo "Deploy by Serverless Devs success."
