@@ -65,15 +65,14 @@ spec:
               - plugin: "@serverless-cd/checkout"
               - plugin: "@serverless-cd/s-setup"
               - run: >
-                  set -e 
-                  s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push 
-                  echo "Deploy by Serverless Devs success."
+                  set -e  s deploy -t \${{ ctx.data.deployFile || s.yaml }}
+                  --use-local --assume-yes --skip-push  echo "Deploy by
+                  Serverless Devs success."
         taskTemplate: serverless-runner-task
         runAfters:
           - name: pre-check-approval
           - name: blank-i2x1
           - name: blank-fepy
-          - name: pre-check-approval-syk7
           - name: pre-check-yeuj
       - name: blank-i2x1
         context:
@@ -89,14 +88,6 @@ spec:
             displayName: 空白任务1
             enable: true
         taskTemplate: serverless-runner-task
-        runAfters:
-          - name: pre-check
-      - name: pre-check-approval-syk7
-        context:
-          data:
-            displayName: 人工审批1
-            enable: true
-        taskTemplate: need-approval
         runAfters:
           - name: pre-check
       - name: pre-check-yeuj
