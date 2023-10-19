@@ -79,3 +79,24 @@ spec:
         taskTemplate: serverless-runner-task
         runAfters:
           - name: pre-check
+      - name: build-and-deploy-yziy
+        context:
+          data:
+            displayName: 构建部署
+            enable: true
+            steps:
+              - plugin: "@serverless-cd/checkout"
+              - plugin: "@serverless-cd/s-setup"
+              - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
+                  --skip-push
+        taskTemplate: serverless-runner-task
+        runAfters:
+          - name: blank-fepy
+      - name: blank-long
+        context:
+          data:
+            displayName: 空白任务
+            enable: true
+        taskTemplate: serverless-runner-task
+        runAfters:
+          - name: blank-fepy
