@@ -73,7 +73,6 @@ spec:
           - name: pre-check-approval
           - name: blank-i2x1
           - name: blank-fepy
-          - name: pre-check-yeuj
       - name: blank-i2x1
         context:
           data:
@@ -87,18 +86,6 @@ spec:
           data:
             displayName: 空白任务1
             enable: true
-        taskTemplate: serverless-runner-task
-        runAfters:
-          - name: pre-check
-      - name: pre-check-yeuj
-        context:
-          data:
-            displayName: 前置检查1
-            enable: true
-            steps:
-              - plugin: "@serverless-cd/checkout"
-              - plguin: "@serverless-cd/s-setup"
-              - run: s plan -t "${{ ctx.data.deployFile }}"
         taskTemplate: serverless-runner-task
         runAfters:
           - name: pre-check
