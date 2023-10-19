@@ -142,3 +142,11 @@ spec:
               - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
                   --skip-push
         taskTemplate: serverless-runner-task
+      - name: pre-check-approval-j002
+        context:
+          data:
+            displayName: 人工审批
+            enable: true
+        taskTemplate: need-approval
+        runAfters:
+          - name: fc-release-r6pj
