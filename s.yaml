@@ -65,9 +65,9 @@ spec:
               - plugin: "@serverless-cd/checkout"
               - plugin: "@serverless-cd/s-setup"
               - run: >
-                  set -e s deploy -t \${{ ctx.data.deployFile || s.yaml }}
-                  --use-local --assume-yes --skip-push echo "Deploy by
-                  Serverless Devs success."
+                  set -e 
+                  s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push 
+                  echo "Deploy by Serverless Devs success."
         taskTemplate: serverless-runner-task
         runAfters:
           - name: pre-check-approval
