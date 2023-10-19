@@ -52,38 +52,31 @@ spec:
         context:
           data:
             dingdingNotification:
-              # 关闭通知
               enable: false
-            # 打开任务执行
             enable: true
-        # 采用内置的need-approval模板
         taskTemplate: need-approval
         runAfters:
-          # 需要在pre-check执行后才执行
           - name: pre-check
-      # 构建并部署
       - name: build-and-deploy
         context:
           data:
-            # 打开任务执行，默认是关闭的
             enable: true
-            # 同样可以在此处声明钉钉告警配置，修改告警模板
-            # dingdingNotification:
-            # 同样可以在此处声明或修改RunnerConfig
-            # runnerConfig:
-            # 执行步骤。下述步骤将会采用开源项目serverless-cd提供的engine进行执行
             steps:
-              # 每个Task都是独立运行的Serverless实例，需要重新checkout
               - plugin: "@serverless-cd/checkout"
-              # 同理，需要再次初始化s工具
               - plugin: "@serverless-cd/s-setup"
-              # 执行s-deploy
-              - run: |
+              - run: >
                   set -e
                   s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push
                   echo "Deploy by Serverless Devs success."
         taskTemplate: serverless-runner-task
-        # 执行顺序，当前任务执行依赖runAfters任务都执行成功
         runAfters:
-          # 在approval后执行
           - name: pre-check-approval
+          - name: blank-i2x1
+      - name: blank-i2x1
+        context:
+          data:
+            displayName: 空白任务1
+            enable: true
+        taskTemplate: serverless-runner-task
+        runAfters:
+          - name: pre-check
