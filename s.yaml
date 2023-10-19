@@ -48,15 +48,6 @@ spec:
         taskTemplate: serverless-runner-task
         # 执行顺序，当前任务执行依赖runAfters任务都执行成功
         runAfters: []
-      - name: pre-check-approval
-        context:
-          data:
-            dingdingNotification:
-              enable: false
-            enable: true
-        taskTemplate: need-approval
-        runAfters:
-          - name: pre-check
       - name: build-and-deploy
         context:
           data:
@@ -67,10 +58,9 @@ spec:
               - run: |
                   set -e  
                   s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push 
-                  echo "Deploy by Serverless Devs success.
+                  echo "Deploy by Serverless Devs success."
         taskTemplate: serverless-runner-task
         runAfters:
-          - name: pre-check-approval
           - name: blank-i2x1
           - name: blank-fepy
       - name: blank-i2x1
