@@ -24,30 +24,16 @@ spec:
       - name: pre-check
         context:
           data:
-            displayName: "前置检查1231"
-            # 打开任务执行，默认是关闭的
+            displayName: 前置检查1231
             enable: true
-            # 同样可以在此处声明钉钉告警配置，修改告警模板
-            # dingdingNotification:
-            # 同样可以在此处声明或修改RunnerConfig
-            # runnerConfig:
-            # 执行步骤。下述步骤将会采用开源项目serverless-cd提供的engine进行执行
             steps:
-              # 第一步，checkout代码
-              # 这里采用了plugin机制，运行serverless-cd社区的插件
-              # @serverless-cd/checkout是一个社区提供的插件，它会将代码checkout到默认路径
-              # 我们会陆续为社区提供更多的插件
               - plugin: "@serverless-cd/checkout"
-              # 第二步，初始化s工具
               - plugin: "@serverless-cd/s-setup"
-                # 执行s-plan，并打印输出内容
-                # 这里为了说明engine能力，将它拆分成了多个step执行
               - run: s plan -t \${{ ctx.data.deployFile || s.yaml }}
               - run: echo "s plan finished."
-        # 任务模板。这里使用了内置的模板serverless-runner-task
         taskTemplate: serverless-runner-task
-        # 执行顺序，当前任务执行依赖runAfters任务都执行成功
-        runAfters: []
+        runAfters:
+          - name: build-and-deploy-zo7q
       - name: build-and-deploy
         context:
           data:
@@ -55,20 +41,33 @@ spec:
             steps:
               - plugin: "@serverless-cd/checkout"
               - plugin: "@serverless-cd/s-setup"
-              - run: |
+              - run: >
                   set -e  
+
                   s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push 
+
                   echo "Deploy by Serverless Devs success."
         taskTemplate: serverless-runner-task
-        runAfters: []
-      - name: blank-long
+        runAfters:
+          - name: pre-check-approval-pzro
+      - name: build-and-deploy-zo7q
         context:
           data:
-            displayName: 空白任务
+            displayName: "构建部署"
             enable: true
+            steps:
+              - plugin: "@serverless-cd/checkout"
+              - plugin: "@serverless-cd/s-setup"
+              - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
+                  --skip-push
         taskTemplate: serverless-runner-task
-        runAfters: []
-      - name: fc-canary-irl2
+      - name: pre-check-approval-pzro
+        context:
+          data:
+            displayName: "人工审批"
+            enable: true
+        taskTemplate: need-approval
+      - name: fc-canary-87hl
         context:
           data:
             displayName: 版本灰度
@@ -83,4 +82,33 @@ spec:
                   regionId: cn-hangzhou
                   canaryPercent: 50
         taskTemplate: serverless-runner-task
-        runAfters: []
+      - name: fc-canary-1zsi
+        context:
+          data:
+            displayName: 版本灰度2
+            enable: true
+            steps:
+              - plugin: "@serverless-cd/checkout"
+              - plugin: "@serverless-cd/s-setup"
+              - plugin: "@serverless-cd/fc-canary"
+                inputs:
+                  serviceName: my-fc-service
+                  aliasName: dev
+                  regionId: cn-hangzhou
+                  canaryPercent: 50
+        taskTemplate: serverless-runner-task
+      - name: fc-canary-5rnb
+        context:
+          data:
+            displayName: 版本灰度3
+            enable: true
+            steps:
+              - plugin: "@serverless-cd/checkout"
+              - plugin: "@serverless-cd/s-setup"
+              - plugin: "@serverless-cd/fc-canary"
+                inputs:
+                  serviceName: my-fc-service
+                  aliasName: dev
+                  regionId: cn-hangzhou
+                  canaryPercent: 50
+        taskTemplate: serverless-runner-task
