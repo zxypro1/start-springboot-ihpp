@@ -15,6 +15,17 @@ spec:
       appName: <% .appName %>
       envName: <% .envName %>
       deployFile: s.yaml
+      runnerConfig:
+        logConfig:
+          project: fc-app-cn-hangzhou-ea5eddc9-50f1-5e6c-93e5-7fa5d25e28dd
+          logstore: function-log
+        memory: 8192
+        regionId: cn-hangzhou
+        serviceRole: acs:ram::1003293809975419:role/aliyunfcserverlessdevsrole
+        internetAccess: true
+        cpu: 6
+        timeout: 600
+
   templateSpec:
     # 要执行的任务，默认所有任务会一同尝试执行
     # 执行会满足runAfters引入的先后约束，任务必须在runAfters声明的任务执行完毕后才可以被执行
