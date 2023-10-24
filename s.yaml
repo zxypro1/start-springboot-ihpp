@@ -69,36 +69,6 @@ spec:
               - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
                   --skip-push
         taskTemplate: serverless-runner-task
-      - name: fc-canary-87hl
-        context:
-          data:
-            displayName: 版本灰度
-            enable: true
-            steps:
-              - plugin: "@serverless-cd/checkout"
-              - plugin: "@serverless-cd/s-setup"
-              - plugin: "@serverless-cd/fc-canary"
-                inputs:
-                  serviceName: my-fc-service
-                  aliasName: dev
-                  regionId: cn-hangzhou
-                  canaryPercent: 50
-        taskTemplate: serverless-runner-task
-      - name: fc-canary-1zsi
-        context:
-          data:
-            displayName: 版本灰度2
-            enable: true
-            steps:
-              - plugin: "@serverless-cd/checkout"
-              - plugin: "@serverless-cd/s-setup"
-              - plugin: "@serverless-cd/fc-canary"
-                inputs:
-                  serviceName: my-fc-service
-                  aliasName: dev
-                  regionId: cn-hangzhou
-                  canaryPercent: 50
-        taskTemplate: serverless-runner-task
       - name: fc-canary-5rnb
         context:
           data:
