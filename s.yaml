@@ -57,8 +57,7 @@ spec:
                   s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push 
                   echo "Deploy by Serverless Devs success."
         taskTemplate: serverless-runner-task
-        runAfters:
-          - name: pre-check-approval-pzro
+        runAfters: []
       - name: build-and-deploy-zo7q
         context:
           data:
@@ -70,12 +69,6 @@ spec:
               - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
                   --skip-push
         taskTemplate: serverless-runner-task
-      - name: pre-check-approval-pzro
-        context:
-          data:
-            displayName: "人工审批"
-            enable: true
-        taskTemplate: need-approval
       - name: fc-canary-87hl
         context:
           data:
