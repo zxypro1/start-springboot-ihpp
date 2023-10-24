@@ -114,3 +114,20 @@ spec:
                   regionId: cn-hangzhou
                   canaryPercent: 50
         taskTemplate: serverless-runner-task
+      - name: fc-canary-cfus
+        context:
+          data:
+            displayName: 版本灰度
+            enable: true
+            steps:
+              - plugin: "@serverless-cd/checkout"
+              - plugin: "@serverless-cd/s-setup"
+              - plugin: "@serverless-cd/fc-canary"
+                inputs:
+                  serviceName: my-fc-service
+                  aliasName: dev
+                  regionId: cn-hangzhou
+                  canaryPercent: 50
+        taskTemplate: serverless-runner-task
+        runAfters:
+          - name: build-and-deploy-zo7q
