@@ -43,8 +43,7 @@ spec:
               - run: s plan -t \${{ ctx.data.deployFile || s.yaml }}
               - run: echo "s plan finished."
         taskTemplate: serverless-runner-task
-        runAfters:
-          - name: build-and-deploy-zo7q
+        runAfters: []
       - name: build-and-deploy
         context:
           data:
@@ -52,52 +51,12 @@ spec:
             steps:
               - plugin: "@serverless-cd/checkout"
               - plugin: "@serverless-cd/s-setup"
-              - run: |
+              - run: >
                   set -e  
+
                   s deploy -t \${{ ctx.data.deployFile || s.yaml }} --use-local --assume-yes --skip-push 
+
                   echo "Deploy by Serverless Devs success."
         taskTemplate: serverless-runner-task
-        runAfters: []
-      - name: build-and-deploy-zo7q
-        context:
-          data:
-            displayName: "构建部署"
-            enable: true
-            steps:
-              - plugin: "@serverless-cd/checkout"
-              - plugin: "@serverless-cd/s-setup"
-              - run: s deploy -t "${{ ctx.data.deployFile }}" --use-local --assume-yes
-                  --skip-push
-        taskTemplate: serverless-runner-task
-      - name: fc-canary-5rnb
-        context:
-          data:
-            displayName: 版本灰度3
-            enable: true
-            steps:
-              - plugin: "@serverless-cd/checkout"
-              - plugin: "@serverless-cd/s-setup"
-              - plugin: "@serverless-cd/fc-canary"
-                inputs:
-                  serviceName: my-fc-service
-                  aliasName: dev
-                  regionId: cn-hangzhou
-                  canaryPercent: 50
-        taskTemplate: serverless-runner-task
-      - name: fc-canary-cfus
-        context:
-          data:
-            displayName: 版本灰度
-            enable: true
-            steps:
-              - plugin: "@serverless-cd/checkout"
-              - plugin: "@serverless-cd/s-setup"
-              - plugin: "@serverless-cd/fc-canary"
-                inputs:
-                  serviceName: my-fc-service
-                  aliasName: dev
-                  regionId: cn-hangzhou
-                  canaryPercent: 50
-        taskTemplate: serverless-runner-task
         runAfters:
-          - name: build-and-deploy-zo7q
+          - name: pre-check
